@@ -105,6 +105,8 @@ details p{padding:0 0 18px;color:var(--soft);max-width:62ch}
 .contact{background:var(--con)}
 .contact .wrap{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(24px,5vw,64px);align-items:start}
 form{display:grid;gap:14px;background:var(--card);padding:clamp(20px,3vw,32px);border-radius:12px}
+.formbox{display:grid;gap:10px;background:var(--card);padding:8px;border-radius:12px}
+.airtable-embed{width:100%;height:860px;border:0;border-radius:8px;background:#fff}
 label{display:grid;gap:6px;font-weight:500;font-size:15px}
 input,textarea,select{font:16px/1.4 inherit;padding:12px 14px;border:1.5px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);min-height:48px;width:100%}
 textarea{min-height:110px;resize:vertical}
@@ -295,25 +297,10 @@ footer nav{display:flex;flex-wrap:wrap;gap:8px 20px;margin-left:auto}
     <p class="lead">Laissez-nous vos coordonnées : nous vous montrons les deux assistants en action et répondons à vos questions.</p>
     <p class="small">Ou écrivez-nous directement : <b id="mail"></b></p>
   </div>
-  <form id="f" novalidate>
-    <div class="two">
-      <label>Nom<input id="nom" autocomplete="name" required></label>
-      <label>Établissement<input id="etab" autocomplete="organization" required></label>
-    </div>
-    <div class="two">
-      <label>E-mail<input id="email" type="email" autocomplete="email" required></label>
-      <label>Formule<select id="plan"><option>Je ne sais pas encore</option><option>Essentiel</option><option>Pro</option><option>Complet</option></select></label>
-    </div>
-    <label>Votre message<textarea id="msg" placeholder="Nombre de chambres, taille de l'équipe, vos besoins…"></textarea></label>
-    <p class="err" id="err" aria-live="polite"></p>
-    <button class="btn main" type="submit">Préparer ma demande</button>
-    <div id="done" aria-live="polite">
-      <b>Votre demande est prête.</b>
-      <p class="small">Copiez-la et envoyez-la à <b id="mail2"></b>.</p>
-      <pre id="out"></pre>
-      <button class="btn" type="button" id="copy">Copier le message</button>
-    </div>
-  </form>
+  <div class="formbox">
+    <iframe class="airtable-embed" src="https://airtable.com/embed/appzB98x9uVuEQ03d/shrp4Khg6r4KlXepA" title="Formulaire de demande de démo Kodaro" loading="lazy"></iframe>
+    <p class="small">Le formulaire ne s'affiche pas ? <a href="https://airtable.com/appzB98x9uVuEQ03d/shrp4Khg6r4KlXepA" target="_blank" rel="noopener">Ouvrez-le dans une nouvelle page</a>.</p>
+  </div>
 </div></section>
 </main>
 
@@ -327,31 +314,6 @@ footer nav{display:flex;flex-wrap:wrap;gap:8px 20px;margin-left:auto}
 {
 const CONTACT = "contact@kodaro.app";
 document.getElementById('mail').textContent = CONTACT;
-document.getElementById('mail2').textContent = CONTACT;
-const $ = id => document.getElementById(id);
-for (const a of document.querySelectorAll('[data-plan]')) {
-  a.addEventListener('click', () => { $('plan').value = a.dataset.plan; });
-}
-$('f').addEventListener('submit', e => {
-  e.preventDefault();
-  const nom = $('nom').value.trim(), etab = $('etab').value.trim(), email = $('email').value.trim();
-  if (!nom || !etab || !/^\S+@\S+\.\S+$/.test(email)) {
-    $('err').textContent = "Merci d'indiquer votre nom, votre établissement et un e-mail valide.";
-    return;
-  }
-  $('err').textContent = "";
-  $('out').textContent =
-    "Demande de démo Kodaro\n" +
-    "Nom : " + nom + "\nÉtablissement : " + etab + "\nE-mail : " + email +
-    "\nFormule : " + $('plan').value +
-    ($('msg').value.trim() ? "\n\n" + $('msg').value.trim() : "");
-  $('done').classList.add('show');
-  $('done').scrollIntoView({block:'nearest'});
-});
-$('copy').addEventListener('click', async () => {
-  try { await navigator.clipboard.writeText($('out').textContent); $('copy').textContent = "Copié"; }
-  catch { $('copy').textContent = "Sélectionnez le texte pour le copier"; }
-});
 }
 </script>
 </body>
