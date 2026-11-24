@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kodaro – IA de gestion</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&display=swap">
+<style>
+/* VOICE: calme, précis, confiant — un outil de travail sérieux pour des directeurs d'hôtel
+   IDEA: la main courante de la réception, tenue toute seule par l'IA
+   PICTURE: un téléphone avec une vraie conversation de l'assistant équipe (briefing du matin)
+   COLOUR and TYPE: blanc, encre noire, béton #d8d8d4, jaune sécurité sur le bouton principal ; Hanken Grotesk
+   LAYOUT: titre sobre à gauche, téléphone en grand, bandes pleine largeur jusqu'au pied de page */
+:root{color-scheme:light dark;
+--bg:light-dark(#ffffff,#1a1a19);--ink:light-dark(#111110,#f2f2ee);--soft:light-dark(#55554f,#b4b4ad);
+--con:light-dark(#d8d8d4,#2a2a28);--con2:light-dark(#efefec,#222220);--line:light-dark(#cfcfca,#3a3a37);
+--yel:#ffe600;--card:light-dark(#ffffff,#232321)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Hanken Grotesk",system-ui,sans-serif;overflow-x:clip}
+a{color:inherit}
+.band{padding:clamp(40px,6vw,96px) max(5vw,16px)}
+.wrap{max-width:1240px;margin:0 auto}
+h1,h2,h3{font-weight:600;line-height:1.05;text-wrap:balance;margin:0}
+h1{font-size:clamp(36px,5.4vw,58px);letter-spacing:-.02em}
+h2{font-size:clamp(30px,3.6vw,44px);letter-spacing:-.015em}
+h3{font-size:20px;line-height:1.2}
+p{margin:0}
+.lead{font-size:clamp(17px,1.6vw,20px);color:var(--soft);max-width:36em}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 22px;border-radius:6px;font:600 16px/1 inherit;text-decoration:none;border:1.5px solid var(--ink);cursor:pointer;background:transparent;color:var(--ink)}
+.btn.main{background:var(--yel);border-color:var(--yel);color:#111110}
+.btn:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,summary:focus-visible,.nav a:focus-visible{outline:3px solid #2b6cff;outline-offset:2px}
+/* nav */
+.top{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:20px;padding:12px max(5vw,16px);flex-wrap:wrap}
+.logo{font-weight:700;font-size:22px;letter-spacing:-.02em;text-decoration:none;display:flex;align-items:center;gap:8px}
+.logo i{width:14px;height:14px;background:var(--ink);display:inline-block;border-radius:2px;box-shadow:5px 5px 0 var(--yel)}
+.nav{display:flex;gap:6px 18px;flex-wrap:wrap;margin-left:auto;align-items:center}
+.nav a{text-decoration:none;color:var(--soft);font-weight:500;padding:8px 2px}
+.nav a:hover{color:var(--ink)}
+.nav .btn{min-height:40px;padding:0 16px;color:#111110}
+/* hero */
+.hero .wrap{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:clamp(28px,5vw,72px);align-items:center}
+.hero .txt{display:grid;gap:22px}
+.tag{display:inline-flex;gap:8px;align-items:center;font-weight:500;color:var(--soft);font-size:15px}
+.tag b{width:8px;height:8px;border-radius:50%;background:#1fa463;display:inline-block}
+.ctas{display:flex;gap:12px;flex-wrap:wrap}
+.proof{display:flex;flex-wrap:wrap;gap:8px 22px;color:var(--soft);font-size:15px;padding-top:6px;border-top:1px solid var(--line)}
+.stage{background:var(--con);border-radius:14px;padding:clamp(20px,4vw,44px);display:grid;place-items:center;position:relative;overflow:hidden}
+.stage::before{content:"";position:absolute;inset:auto -10% -40% 30%;height:70%;background:var(--con2);transform:rotate(-8deg);border-radius:20px}
+.phone{position:relative;width:min(100%,340px);background:#111110;border-radius:34px;padding:12px;box-shadow:0 30px 50px -20px rgba(0,0,0,.45),inset 0 0 0 1.5px #3a3a37}
+.screen{background:#f6f6f3;border-radius:24px;overflow:hidden;color:#111110;font-size:13.5px;line-height:1.45}
+.bar{display:flex;align-items:center;gap:10px;padding:14px 14px 10px;border-bottom:1px solid #e2e2dd;background:#fff}
+.av{width:30px;height:30px;border-radius:50%;background:#111110;color:var(--yel);display:grid;place-items:center;font-weight:700;font-size:13px}
+.bar small{display:block;color:#6b6b65;font-size:12px}
+.chat{display:grid;gap:10px;padding:14px}
+.me{justify-self:end;background:#111110;color:#fff;padding:9px 12px;border-radius:14px 14px 4px 14px;max-width:85%}
+.bot{background:#fff;border:1px solid #e2e2dd;padding:10px 12px;border-radius:14px 14px 14px 4px;max-width:94%}
+.bot ol{margin:6px 0 0;padding-left:18px;display:grid;gap:3px}
+.bot .ok{display:inline-block;margin-top:8px;font-size:12px;color:#6b6b65}
+.note{font-size:13px;color:var(--soft);margin-top:12px;text-align:center;position:relative}
+/* two assistants */
+.duo{background:var(--ink);color:var(--bg)}
+.duo .lead{color:color-mix(in srgb,var(--bg) 70%,var(--ink))}
+.duo .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(16px,3vw,32px);margin-top:36px}
+.as{border:1px solid color-mix(in srgb,var(--bg) 25%,var(--ink));border-radius:12px;padding:clamp(20px,3vw,32px);display:grid;gap:14px;align-content:start}
+.as ul{margin:0;padding-left:18px;display:grid;gap:6px}
+.as .who{font-size:15px;color:var(--yel);font-weight:600}
+/* features */
+.feat .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-top:36px}
+.f{background:var(--bg);padding:26px;display:grid;gap:10px;align-content:start}
+.f svg{width:34px;height:34px}
+.f p{color:var(--soft)}
+.f ul{margin:0;padding-left:18px;color:var(--soft);display:grid;gap:4px;font-size:15px}
+/* steps */
+.steps{background:var(--con2)}
+.steps .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(16px,3vw,32px);margin-top:36px}
+.st{display:grid;gap:10px;align-content:start;padding-top:18px;border-top:2px solid var(--ink)}
+.st p{color:var(--soft)}
+/* sectors */
+.sec .row{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.chip{border:1px solid var(--line);border-radius:999px;padding:10px 18px;font-weight:500;display:flex;gap:10px;align-items:center}
+.chip span{font-size:13px;color:var(--soft)}
+.chip.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip.on span{color:var(--yel)}
+/* pricing */
+.price .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,2vw,24px);margin-top:36px}
+.pl{border:1px solid var(--line);border-radius:12px;padding:28px;display:grid;gap:14px;align-content:start;background:var(--card)}
+.pl.hi{border:2px solid var(--ink)}
+.pl .amt{font-size:30px;font-weight:600;white-space:nowrap}
+.pl ul{margin:0;padding-left:18px;display:grid;gap:6px;color:var(--soft)}
+.small{font-size:14px;color:var(--soft)}
+/* faq */
+.faq .list{max-width:820px;margin-top:28px;border-top:1px solid var(--line)}
+details{border-bottom:1px solid var(--line)}
+summary{cursor:pointer;padding:18px 0;font-weight:600;font-size:18px;list-style:none;display:flex;justify-content:space-between;gap:16px;min-height:44px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-weight:400;font-size:24px;line-height:1}
+details[open] summary::after{content:"–"}
+details p{padding:0 0 18px;color:var(--soft);max-width:62ch}
+/* contact */
+.contact{background:var(--con)}
+.contact .wrap{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(24px,5vw,64px);align-items:start}
+form{display:grid;gap:14px;background:var(--card);padding:clamp(20px,3vw,32px);border-radius:12px}
+label{display:grid;gap:6px;font-weight:500;font-size:15px}
+input,textarea,select{font:16px/1.4 inherit;padding:12px 14px;border:1.5px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);min-height:48px;width:100%}
+textarea{min-height:110px;resize:vertical}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+#done{display:none;background:var(--con2);border-radius:8px;padding:16px;gap:10px}
+#done.show{display:grid}
+#done pre{white-space:pre-wrap;margin:0;font:14px/1.5 inherit;background:var(--bg);padding:12px;border-radius:6px;border:1px solid var(--line)}
+.err{color:#c0352b;font-size:14px;min-height:1em}
+footer{border-top:1px solid var(--line)}
+footer .wrap{display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center;padding:28px max(5vw,16px);color:var(--soft);font-size:14px}
+footer nav{display:flex;flex-wrap:wrap;gap:8px 20px;margin-left:auto}
+@media(max-width:900px){.feat .grid,.price .grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.nav a:not(.btn){display:none}}
+@media(max-width:700px){.hero .wrap,.contact .wrap,.duo .grid,.steps .grid{grid-template-columns:minmax(0,1fr)}.feat .grid,.price .grid{grid-template-columns:minmax(0,1fr)}.two{grid-template-columns:minmax(0,1fr)}}
+</style>
+</head>
+<body>
+
+<header class="top"><div class="wrap">
+  <a class="logo" href="#accueil"><i></i>Kodaro</a>
+  <nav class="nav" aria-label="Menu principal">
+    <a href="#assistants">Assistants</a>
+    <a href="#fonctions">Fonctions</a>
+    <a href="#tarifs">Tarifs</a>
+    <a href="#faq">Questions</a>
+    <a class="btn main" href="#contact">Demander une démo</a>
+  </nav>
+</div></header>
+
+<main>
+<section class="band hero" id="accueil"><div class="wrap">
+  <div class="txt">
+    <span class="tag"><b></b>Disponible pour l'hôtellerie</span>
+    <h1>Votre équipe s'occupe des clients. Kodaro s'occupe du reste.</h1>
+    <p class="lead">Planning, paie, pourboires, litiges, réservations et prix des concurrents : Kodaro réunit toute la gestion de votre établissement dans deux assistants IA, que vos équipes utilisent simplement en leur écrivant.</p>
+    <div class="ctas">
+      <a class="btn main" href="#contact">Demander une démo</a>
+      <a class="btn" href="#fonctions">Voir les fonctions</a>
+    </div>
+    <div class="proof"><span>Rien à installer</span><span>Accès par code personnel</span><span>Formation guidée intégrée</span></div>
+  </div>
+  <div>
+    <div class="stage">
+      <div class="phone" role="img" aria-label="Exemple de conversation entre un manager et l'assistant équipe Kodaro">
+        <div class="screen">
+          <div class="bar"><div class="av">K</div><div><b>Assistant équipe</b><small>Hôtel Le Comptoir · en ligne</small></div></div>
+          <div class="chat">
+            <div class="me">Mon code est •••••. Fais-moi le briefing du matin.</div>
+            <div class="bot">Bonjour Arthur, voici le point du jour :
+              <ol>
+                <li>Réception : Paul remplace Marie (8 h – 16 h)</li>
+                <li>1 tâche en retard : inventaire du bar</li>
+                <li>Incident : ascenseur du 2ᵉ étage, en cours</li>
+                <li>Litige : bruit chambre 12, à traiter</li>
+                <li>Anniversaire : Marie, aujourd'hui</li>
+              </ol>
+              <span class="ok">Lu dans votre planning à l'instant</span>
+            </div>
+            <div class="me">Combien coûtent les hôtels du quartier le 20 décembre ?</div>
+            <div class="bot">5 hôtels comparés · moyenne 109,60 € la nuit. Ton prix de 110 € est dans la moyenne.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="note">Exemple de conversation, avec des données de démonstration.</p>
+  </div>
+</div></section>
+
+<section class="band duo" id="assistants"><div class="wrap">
+  <h2>Deux assistants, un seul outil</h2>
+  <p class="lead" style="margin-top:14px">Un assistant parle à vos clients, l'autre travaille avec votre équipe. Les deux s'appuient sur les mêmes données.</p>
+  <div class="grid">
+    <article class="as">
+      <span class="who">Pour vos clients</span>
+      <h3>Assistant réservations</h3>
+      <ul>
+        <li>Recherche de disponibilités et de tarifs en direct</li>
+        <li>Photos des chambres et conditions d'annulation</li>
+        <li>Pré-réservation puis réservation confirmée</li>
+        <li>Répond à toute heure, sans attente</li>
+      </ul>
+    </article>
+    <article class="as">
+      <span class="who">Pour votre équipe</span>
+      <h3>Assistant équipe</h3>
+      <ul>
+        <li>Chaque employé consulte son planning, ses tâches et ses pourboires</li>
+        <li>Absences, échanges, incidents et litiges signalés en une phrase</li>
+        <li>Le manager valide, confie et décide depuis le même chat</li>
+        <li>Briefing du matin et rapport du lundi préparés pour lui</li>
+      </ul>
+    </article>
+  </div>
+</div></section>
+
+<section class="band feat" id="fonctions"><div class="wrap">
+  <h2>Tout ce qu'un manager fait chaque semaine, en une conversation</h2>
+  <div class="grid">
+    <div class="f">
+      <svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="7" width="26" height="23" rx="2"/><path d="M4 14h26M11 4v6M23 4v6"/><rect x="9" y="18" width="6" height="5" fill="#ffe600" stroke="none"/></svg>
+      <h3>Planning et équipe</h3>
+      <ul><li>Créneaux sans chevauchement</li><li>Absences et échanges à valider</li><li>Remplaçant trouvé en un message</li><li>Tableau des heures et alerte au-delà de 35 h</li></ul>
+    </div>
+    <div class="f">
+      <svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 28V12M14 28V6M22 28V16M30 28V9"/><circle cx="22" cy="16" r="3" fill="#ffe600" stroke="none"/></svg>
+      <h3>Pilotage</h3>
+      <ul><li>Briefing du matin en 7 points</li><li>Rapport hebdomadaire du lundi</li><li>Tâches et consignes avec échéance</li><li>Bilans de fin de service</li></ul>
+    </div>
+    <div class="f">
+      <svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="9" width="26" height="17" rx="2"/><circle cx="17" cy="17.5" r="4" fill="#ffe600" stroke="currentColor"/><path d="M8 13h2M24 22h2"/></svg>
+      <h3>Argent et paie</h3>
+      <ul><li>Pourboires répartis au prorata des heures</li><li>Primes, avances et notes de frais</li><li>Récap de paie mensuel pour le comptable</li></ul>
+    </div>
+    <div class="f">
+      <svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 4 30 28H4z"/><path d="M17 13v7"/><circle cx="17" cy="24" r="1.6" fill="#ffe600" stroke="none"/></svg>
+      <h3>Incidents et litiges</h3>
+      <ul><li>Pannes et casses signalées par l'équipe</li><li>Plaintes clients suivies jusqu'à leur résolution</li><li>Compensations validées par le manager</li></ul>
+    </div>
+    <div class="f">
+      <svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="2"><circle cx="15" cy="15" r="9"/><path d="m22 22 8 8"/><path d="M11 17l3-4 3 3 3-4" stroke="#c9a800"/></svg>
+      <h3>Analyse de marché</h3>
+      <ul><li>Prix des hôtels concurrents du quartier</li><li>Points forts et faibles tirés de leurs avis</li><li>Grands événements de la ville et conseils de prix</li></ul>
+    </div>
+    <div class="f">
+      <svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 4 28 8v9c0 7-5 11-11 13C11 28 6 24 6 17V8z"/><path d="m12 17 4 4 7-8" stroke-width="2.4"/></svg>
+      <h3>Équipe et sécurité</h3>
+      <ul><li>Code personnel et rôles employé ou manager</li><li>Journal de chaque modification</li><li>Interrupteur d'urgence pour tout mettre en pause</li><li>Humeur d'équipe anonyme, anniversaires, réussites</li></ul>
+    </div>
+  </div>
+</div></section>
+
+<section class="band steps"><div class="wrap">
+  <h2>Mise en place</h2>
+  <div class="grid">
+    <div class="st"><h3>On découvre votre établissement</h3><p>Une démo, puis un échange sur votre équipe, vos postes et votre façon de travailler.</p></div>
+    <div class="st"><h3>On configure vos assistants</h3><p>Vos employés, vos codes, vos règles. Vos données restent dans votre propre base.</p></div>
+    <div class="st"><h3>Votre équipe est formée par l'IA</h3><p>Chaque employé écrit « aide » et suit une formation guidée adaptée à son rôle.</p></div>
+  </div>
+</div></section>
+
+<section class="band sec"><div class="wrap">
+  <h2>Pensé pour l'hôtellerie, conçu pour aller plus loin</h2>
+  <p class="lead" style="margin-top:14px">Kodaro commence par les hôtels. Les mêmes fonctions de gestion arriveront ensuite dans d'autres secteurs.</p>
+  <div class="row">
+    <span class="chip on">Hôtellerie <span>Disponible</span></span>
+    <span class="chip">Restauration <span>Bientôt</span></span>
+    <span class="chip">Commerce <span>Bientôt</span></span>
+    <span class="chip">Services <span>Bientôt</span></span>
+  </div>
+</div></section>
+
+<section class="band price" id="tarifs"><div class="wrap">
+  <h2>Trois formules selon vos besoins</h2>
+  <p class="small" style="margin-top:12px">Les tarifs sont établis sur devis, selon la taille de votre établissement.</p>
+  <div class="grid">
+    <div class="pl">
+      <h3>Essentiel</h3><div class="amt">Sur devis</div>
+      <ul><li>Assistant équipe</li><li>Planning, tâches, incidents</li><li>Briefing du matin</li></ul>
+      <a class="btn" href="#contact" data-plan="Essentiel">Choisir Essentiel</a>
+    </div>
+    <div class="pl hi">
+      <h3>Pro</h3><div class="amt">Sur devis</div>
+      <ul><li>Tout Essentiel</li><li>Assistant réservations pour vos clients</li><li>Pourboires, primes, récap de paie</li><li>Litiges clients</li></ul>
+      <a class="btn main" href="#contact" data-plan="Pro">Choisir Pro</a>
+    </div>
+    <div class="pl">
+      <h3>Complet</h3><div class="amt">Sur devis</div>
+      <ul><li>Tout Pro</li><li>Analyse de marché : prix, avis, événements</li><li>Rapport du lundi</li><li>Accompagnement personnalisé</li></ul>
+      <a class="btn" href="#contact" data-plan="Complet">Choisir Complet</a>
+    </div>
+  </div>
+</div></section>
+
+<section class="band faq" id="faq"><div class="wrap">
+  <h2>Questions fréquentes</h2>
+  <div class="list">
+    <details><summary>Faut-il installer une application ?</summary><p>Non. Vos équipes écrivent à l'assistant dans une fenêtre de discussion, depuis un téléphone ou un ordinateur. Rien à télécharger.</p></details>
+    <details><summary>Qui peut voir quoi ?</summary><p>Chaque personne s'identifie avec son code personnel. Un employé ne voit que ses propres horaires, tâches, pourboires et paiements. Seul un manager peut valider, modifier ou consulter les données de toute l'équipe.</p></details>
+    <details><summary>Où sont stockées mes données ?</summary><p>Dans une base de données dédiée à votre établissement. Chaque ajout ou modification est inscrit dans un journal d'activité.</p></details>
+    <details><summary>L'IA peut-elle se tromper ?</summary><p>Elle lit vos données avant de répondre et ne confirme jamais une action qui n'a pas été enregistrée. Les décisions importantes, comme une compensation ou un prix, restent toujours celles du manager.</p></details>
+    <details><summary>Comment mon équipe apprend-elle à s'en servir ?</summary><p>Une formation guidée est intégrée : chaque employé la suit étape par étape, avec des exemples de phrases à écrire, adaptés à son rôle.</p></details>
+    <details><summary>Le récap de paie remplace-t-il mon logiciel de paie ?</summary><p>Non. Il prépare un récapitulatif clair des heures, pourboires, primes, avances et notes de frais, que votre comptable vérifie et utilise.</p></details>
+  </div>
+</div></section>
+
+<section class="band contact" id="contact"><div class="wrap">
+  <div style="display:grid;gap:16px">
+    <h2>Voyez Kodaro avec vos propres yeux</h2>
+    <p class="lead">Laissez-nous vos coordonnées : nous vous montrons les deux assistants en action et répondons à vos questions.</p>
+    <p class="small">Ou écrivez-nous directement : <b id="mail"></b></p>
+  </div>
+  <form id="f" novalidate>
+    <div class="two">
+      <label>Nom<input id="nom" autocomplete="name" required></label>
+      <label>Établissement<input id="etab" autocomplete="organization" required></label>
+    </div>
+    <div class="two">
+      <label>E-mail<input id="email" type="email" autocomplete="email" required></label>
+      <label>Formule<select id="plan"><option>Je ne sais pas encore</option><option>Essentiel</option><option>Pro</option><option>Complet</option></select></label>
+    </div>
+    <label>Votre message<textarea id="msg" placeholder="Nombre de chambres, taille de l'équipe, vos besoins…"></textarea></label>
+    <p class="err" id="err" aria-live="polite"></p>
+    <button class="btn main" type="submit">Préparer ma demande</button>
+    <div id="done" aria-live="polite">
+      <b>Votre demande est prête.</b>
+      <p class="small">Copiez-la et envoyez-la à <b id="mail2"></b>.</p>
+      <pre id="out"></pre>
+      <button class="btn" type="button" id="copy">Copier le message</button>
+    </div>
+  </form>
+</div></section>
+</main>
+
+<footer><div class="wrap">
+  <a class="logo" href="#accueil" style="font-size:18px"><i></i>Kodaro</a>
+  <span>© 2026 Kodaro. Gestion d'entreprise pilotée par l'IA.</span>
+  <nav aria-label="Pied de page"><a href="#fonctions">Fonctions</a><a href="#tarifs">Tarifs</a><a href="#faq">Questions</a><a href="#contact">Contact</a></nav>
+</div></footer>
+
+<script>
+{
+const CONTACT = "contact@kodaro.app";
+document.getElementById('mail').textContent = CONTACT;
+document.getElementById('mail2').textContent = CONTACT;
+const $ = id => document.getElementById(id);
+for (const a of document.querySelectorAll('[data-plan]')) {
+  a.addEventListener('click', () => { $('plan').value = a.dataset.plan; });
+}
+$('f').addEventListener('submit', e => {
+  e.preventDefault();
+  const nom = $('nom').value.trim(), etab = $('etab').value.trim(), email = $('email').value.trim();
+  if (!nom || !etab || !/^\S+@\S+\.\S+$/.test(email)) {
+    $('err').textContent = "Merci d'indiquer votre nom, votre établissement et un e-mail valide.";
+    return;
+  }
+  $('err').textContent = "";
+  $('out').textContent =
+    "Demande de démo Kodaro\n" +
+    "Nom : " + nom + "\nÉtablissement : " + etab + "\nE-mail : " + email +
+    "\nFormule : " + $('plan').value +
+    ($('msg').value.trim() ? "\n\n" + $('msg').value.trim() : "");
+  $('done').classList.add('show');
+  $('done').scrollIntoView({block:'nearest'});
+});
+$('copy').addEventListener('click', async () => {
+  try { await navigator.clipboard.writeText($('out').textContent); $('copy').textContent = "Copié"; }
+  catch { $('copy').textContent = "Sélectionnez le texte pour le copier"; }
+});
+}
+</script>
+</body>
+</html>
