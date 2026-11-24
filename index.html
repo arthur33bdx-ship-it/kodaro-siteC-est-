@@ -297,10 +297,24 @@ footer nav{display:flex;flex-wrap:wrap;gap:8px 20px;margin-left:auto}
     <p class="lead">Laissez-nous vos coordonnées : nous vous montrons les deux assistants en action et répondons à vos questions.</p>
     <p class="small">Ou écrivez-nous directement : <b id="mail"></b></p>
   </div>
-  <div class="formbox">
-    <iframe class="airtable-embed" src="https://airtable.com/embed/appzB98x9uVuEQ03d/shrp4Khg6r4KlXepA" title="Formulaire de demande de démo Kodaro" loading="lazy"></iframe>
-    <p class="small">Le formulaire ne s'affiche pas ? <a href="https://airtable.com/appzB98x9uVuEQ03d/shrp4Khg6r4KlXepA" target="_blank" rel="noopener">Ouvrez-le dans une nouvelle page</a>.</p>
-  </div>
+  <form action="https://formsubmit.co/contact@kodaro.app" method="POST">
+    <input type="hidden" name="_subject" value="Nouvelle demande de démo Kodaro">
+    <input type="hidden" name="_template" value="table">
+    <input type="hidden" name="_next" value="https://kodaro.app/#merci">
+    <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+    <div class="two">
+      <label>Nom<input name="nom" autocomplete="name" required></label>
+      <label>Établissement<input name="etablissement" autocomplete="organization" required></label>
+    </div>
+    <div class="two">
+      <label>E-mail<input name="email" type="email" autocomplete="email" required></label>
+      <label>Téléphone<input name="telephone" type="tel" autocomplete="tel"></label>
+    </div>
+    <label>Formule<select name="formule"><option>Je ne sais pas encore</option><option>Essentiel</option><option>Pro</option><option>Complet</option></select></label>
+    <label>Votre message<textarea name="message" placeholder="Nombre de chambres, taille de l'équipe, vos besoins…"></textarea></label>
+    <button class="btn main" type="submit">Envoyer ma demande</button>
+    <p class="small" id="merci-msg" hidden><b>Merci, votre demande a bien été envoyée.</b> Nous vous répondons rapidement.</p>
+  </form>
 </div></section>
 </main>
 
@@ -314,6 +328,9 @@ footer nav{display:flex;flex-wrap:wrap;gap:8px 20px;margin-left:auto}
 {
 const CONTACT = "contact@kodaro.app";
 document.getElementById('mail').textContent = CONTACT;
+const show = () => { if (location.hash === '#merci') { const m = document.getElementById('merci-msg'); m.hidden = false; m.scrollIntoView({block:'center'}); } };
+show(); window.addEventListener('hashchange', show);
+for (const a of document.querySelectorAll('[data-plan]')) a.addEventListener('click', () => { document.querySelector('select[name=formule]').value = a.dataset.plan; });
 }
 </script>
 </body>
