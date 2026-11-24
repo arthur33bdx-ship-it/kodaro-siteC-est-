@@ -3,336 +3,619 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Kodaro – IA de gestion</title>
+<title>Kodaro – Plateforme de gestion hôtelière assistée par IA</title>
+<meta name="description" content="Kodaro réunit deux assistants IA pour les hôtels : un assistant réservations pour vos clients et un assistant équipe pour le planning, la paie, les incidents, les litiges et l'analyse de marché. Essai gratuit de 14 jours.">
+<link rel="canonical" href="https://kodaro.app/">
+<meta name="theme-color" content="#0f0f0e">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://kodaro.app/">
+<meta property="og:title" content="Kodaro – Votre hôtel mérite une équipe augmentée">
+<meta property="og:description" content="Deux assistants IA. Une seule plateforme. Réservations, plannings, paie, incidents, litiges et veille tarifaire pour les hôtels.">
+<meta property="og:locale" content="fr_FR">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&display=swap">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Kodaro","applicationCategory":"BusinessApplication","operatingSystem":"Web","url":"https://kodaro.app/","description":"Plateforme de gestion hôtelière assistée par intelligence artificielle : assistant réservations et assistant équipe.","offers":[{"@type":"Offer","name":"Essentiel","price":"79","priceCurrency":"EUR"},{"@type":"Offer","name":"Pro","price":"149","priceCurrency":"EUR"},{"@type":"Offer","name":"Complet","price":"249","priceCurrency":"EUR"}]}
+</script>
 <style>
-/* VOICE: calme, précis, confiant — un outil de travail sérieux pour des directeurs d'hôtel
-   IDEA: la main courante de la réception, tenue toute seule par l'IA
-   PICTURE: un téléphone avec une vraie conversation de l'assistant équipe (briefing du matin)
-   COLOUR and TYPE: blanc, encre noire, béton #d8d8d4, jaune sécurité sur le bouton principal ; Hanken Grotesk
-   LAYOUT: titre sobre à gauche, téléphone en grand, bandes pleine largeur jusqu'au pied de page */
-:root{color-scheme:light dark;
---bg:light-dark(#ffffff,#1a1a19);--ink:light-dark(#111110,#f2f2ee);--soft:light-dark(#55554f,#b4b4ad);
---con:light-dark(#d8d8d4,#2a2a28);--con2:light-dark(#efefec,#222220);--line:light-dark(#cfcfca,#3a3a37);
---yel:#ffe600;--card:light-dark(#ffffff,#232321)}
-:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+/* VOICE: éditeur SaaS international, calme et sûr de lui, au service de l'hospitalité
+   IDEA: la conciergerie d'un grand hôtel, rendue numérique : deux assistants qui travaillent en coulisses
+   PICTURE: une console de démonstration vivante où les deux assistants échangent en temps réel
+   COLOUR and TYPE: noir profond, blanc cassé, gris minéral, jaune citron signature, vert discret pour les statuts ; Manrope
+   LAYOUT: bandes pleine largeur alternant nuit et jour, grandes compositions typographiques, cartes nettes */
+:root{--night:#0f0f0e;--night2:#171716;--night3:#22221f;--paper:#f5f4ef;--paper2:#ebe9e1;--mineral:#8c8b84;--mineral2:#5f5e58;--ink:#121211;--lemon:#f3e600;--lemon2:#d9cd00;--green:#2fa36b;--line-d:#2c2c29;--line-l:#dad8cf}
 *{box-sizing:border-box;min-width:0}
-html{scroll-behavior:smooth;scroll-padding-top:72px}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Hanken Grotesk",system-ui,sans-serif;overflow-x:clip}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}
+body{margin:0;background:var(--night);color:var(--paper);font:17px/1.6 Manrope,system-ui,sans-serif;overflow-x:clip;-webkit-font-smoothing:antialiased}
 a{color:inherit}
-.band{padding:clamp(40px,6vw,96px) max(5vw,16px)}
-.wrap{max-width:1240px;margin:0 auto}
-h1,h2,h3{font-weight:600;line-height:1.05;text-wrap:balance;margin:0}
-h1{font-size:clamp(36px,5.4vw,58px);letter-spacing:-.02em}
-h2{font-size:clamp(30px,3.6vw,44px);letter-spacing:-.015em}
-h3{font-size:20px;line-height:1.2}
+img,svg,video{display:block;max-width:100%}
+.wrap{max-width:1240px;margin:0 auto;padding:0 max(5vw,20px)}
+.band{padding:clamp(72px,10vw,140px) 0}
+.day{background:var(--paper);color:var(--ink)}
+.day2{background:var(--paper2);color:var(--ink)}
+h1,h2,h3{margin:0;font-weight:800;letter-spacing:-.025em;text-wrap:balance}
+h1{font-size:clamp(42px,6.4vw,84px);line-height:1.02}
+h2{font-size:clamp(34px,4.6vw,58px);line-height:1.05}
+h3{font-size:22px;line-height:1.2;letter-spacing:-.01em}
 p{margin:0}
-.lead{font-size:clamp(17px,1.6vw,20px);color:var(--soft);max-width:36em}
-.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 22px;border-radius:6px;font:600 16px/1 inherit;text-decoration:none;border:1.5px solid var(--ink);cursor:pointer;background:transparent;color:var(--ink)}
-.btn.main{background:var(--yel);border-color:var(--yel);color:#111110}
-.btn:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,summary:focus-visible,.nav a:focus-visible{outline:3px solid #2b6cff;outline-offset:2px}
+.lead{font-size:clamp(18px,1.6vw,21px);color:var(--mineral);max-width:40em}
+.day .lead,.day2 .lead{color:var(--mineral2)}
+.kicker{display:inline-flex;align-items:center;gap:10px;font-weight:700;font-size:15px;color:var(--mineral);margin-bottom:20px}
+.kicker i{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 4px rgba(47,163,107,.18)}
+.day .kicker,.day2 .kicker{color:var(--mineral2)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 26px;border-radius:999px;font:700 16px/1 Manrope,sans-serif;text-decoration:none;cursor:pointer;border:1.5px solid currentColor;background:transparent;color:inherit;transition:transform .2s,background .2s,color .2s,border-color .2s}
+.btn:hover{transform:translateY(-2px)}
+.btn.main{background:var(--lemon);border-color:var(--lemon);color:var(--ink)}
+.btn.main:hover{background:#fff35a}
+.btn.ghost{border-color:var(--line-d)}
+.day .btn.ghost{border-color:var(--line-l)}
+.btn svg{width:18px;height:18px}
+:focus-visible{outline:3px solid var(--lemon);outline-offset:3px;border-radius:6px}
+.skip{position:absolute;left:-999px;top:8px;background:var(--lemon);color:var(--ink);padding:10px 16px;border-radius:8px;z-index:20}
+.skip:focus{left:8px}
 /* nav */
-.top{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
-.top .wrap{display:flex;align-items:center;gap:20px;padding:12px max(5vw,16px);flex-wrap:wrap}
-.logo{font-weight:700;font-size:22px;letter-spacing:-.02em;text-decoration:none;display:flex;align-items:center;gap:8px}
-.logo i{width:14px;height:14px;background:var(--ink);display:inline-block;border-radius:2px;box-shadow:5px 5px 0 var(--yel)}
-.nav{display:flex;gap:6px 18px;flex-wrap:wrap;margin-left:auto;align-items:center}
-.nav a{text-decoration:none;color:var(--soft);font-weight:500;padding:8px 2px}
-.nav a:hover{color:var(--ink)}
-.nav .btn{min-height:40px;padding:0 16px;color:#111110}
+.top{position:sticky;top:0;z-index:10;background:rgba(15,15,14,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line-d)}
+.top .wrap{display:flex;align-items:center;gap:24px;min-height:72px}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none;font-weight:800;font-size:22px;letter-spacing:-.02em}
+.mark{position:relative;width:20px;height:20px}
+.mark::before,.mark::after{content:"";position:absolute;width:15px;height:15px}
+.mark::after{right:0;bottom:0;background:var(--lemon)}
+.mark::before{left:0;top:0;background:var(--paper);z-index:1}
+.menu{display:flex;gap:4px 26px;margin-left:auto;align-items:center}
+.menu a{text-decoration:none;color:var(--mineral);font-weight:600;font-size:15px;padding:10px 0}
+.menu a:hover{color:var(--paper)}
+.menu .btn{min-height:44px;padding:0 20px;color:var(--ink);font-size:15px}
+.burger{display:none;margin-left:auto;width:48px;height:48px;border-radius:12px;border:1px solid var(--line-d);background:transparent;color:var(--paper);cursor:pointer}
+@media(max-width:960px){.burger{display:grid;place-items:center}.menu{display:none;position:absolute;left:0;right:0;top:72px;flex-direction:column;align-items:stretch;background:var(--night);border-bottom:1px solid var(--line-d);padding:12px max(5vw,20px) 24px}.menu.open{display:flex}.menu a{padding:14px 0;font-size:17px}.menu .btn{margin-top:8px;min-height:52px}}
 /* hero */
-.hero .wrap{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:clamp(28px,5vw,72px);align-items:center}
-.hero .txt{display:grid;gap:22px}
-.tag{display:inline-flex;gap:8px;align-items:center;font-weight:500;color:var(--soft);font-size:15px}
-.tag b{width:8px;height:8px;border-radius:50%;background:#1fa463;display:inline-block}
-.ctas{display:flex;gap:12px;flex-wrap:wrap}
-.proof{display:flex;flex-wrap:wrap;gap:8px 22px;color:var(--soft);font-size:15px;padding-top:6px;border-top:1px solid var(--line)}
-.stage{background:var(--con);border-radius:14px;padding:clamp(20px,4vw,44px);display:grid;place-items:center;position:relative;overflow:hidden}
-.stage::before{content:"";position:absolute;inset:auto -10% -40% 30%;height:70%;background:var(--con2);transform:rotate(-8deg);border-radius:20px}
-.phone{position:relative;width:min(100%,340px);background:#111110;border-radius:34px;padding:12px;box-shadow:0 30px 50px -20px rgba(0,0,0,.45),inset 0 0 0 1.5px #3a3a37}
-.screen{background:#f6f6f3;border-radius:24px;overflow:hidden;color:#111110;font-size:13.5px;line-height:1.45}
-.bar{display:flex;align-items:center;gap:10px;padding:14px 14px 10px;border-bottom:1px solid #e2e2dd;background:#fff}
-.av{width:30px;height:30px;border-radius:50%;background:#111110;color:var(--yel);display:grid;place-items:center;font-weight:700;font-size:13px}
-.bar small{display:block;color:#6b6b65;font-size:12px}
-.chat{display:grid;gap:10px;padding:14px}
-.me{justify-self:end;background:#111110;color:#fff;padding:9px 12px;border-radius:14px 14px 4px 14px;max-width:85%}
-.bot{background:#fff;border:1px solid #e2e2dd;padding:10px 12px;border-radius:14px 14px 14px 4px;max-width:94%}
-.bot ol{margin:6px 0 0;padding-left:18px;display:grid;gap:3px}
-.bot .ok{display:inline-block;margin-top:8px;font-size:12px;color:#6b6b65}
-.note{font-size:13px;color:var(--soft);margin-top:12px;text-align:center;position:relative}
-/* two assistants */
-.duo{background:var(--ink);color:var(--bg)}
-.duo .lead{color:color-mix(in srgb,var(--bg) 70%,var(--ink))}
-.duo .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(16px,3vw,32px);margin-top:36px}
-.as{border:1px solid color-mix(in srgb,var(--bg) 25%,var(--ink));border-radius:12px;padding:clamp(20px,3vw,32px);display:grid;gap:14px;align-content:start}
-.as ul{margin:0;padding-left:18px;display:grid;gap:6px}
-.as .who{font-size:15px;color:light-dark(var(--yel),#7a6200);font-weight:600}
+.hero{position:relative;overflow:hidden;padding:clamp(56px,8vw,110px) 0 clamp(72px,9vw,120px)}
+.hero::before{content:"";position:absolute;inset:-30% -10% auto 40%;height:110%;background:radial-gradient(closest-side,rgba(243,230,0,.13),transparent 70%);pointer-events:none}
+.hero::after{content:"";position:absolute;inset:0;background-image:linear-gradient(var(--line-d) 1px,transparent 1px),linear-gradient(90deg,var(--line-d) 1px,transparent 1px);background-size:64px 64px;mask-image:radial-gradient(ellipse at 70% 40%,#000 0,transparent 65%);-webkit-mask-image:radial-gradient(ellipse at 70% 40%,#000 0,transparent 65%);opacity:.45;pointer-events:none}
+.hero .wrap{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:clamp(40px,6vw,80px);align-items:center}
+.hero h1 span{color:var(--lemon)}
+.hero .lead{margin-top:26px;color:#c9c8c1}
+.hero .pitch{margin-top:18px;color:var(--mineral);font-size:16px;max-width:38em}
+.ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
+.proof{display:flex;flex-wrap:wrap;gap:10px 26px;margin-top:38px;padding-top:24px;border-top:1px solid var(--line-d);color:var(--mineral);font-size:15px;font-weight:600}
+.proof span{display:flex;align-items:center;gap:8px}
+.proof svg{width:16px;height:16px;color:var(--green)}
+/* console */
+.console{position:relative;background:linear-gradient(180deg,#1d1d1b,#141413);border:1px solid var(--line-d);border-radius:28px;padding:14px;box-shadow:0 40px 80px -30px rgba(0,0,0,.8),0 0 0 1px rgba(255,255,255,.03) inset}
+.tabs{display:flex;gap:6px;background:var(--night);border-radius:16px;padding:6px}
+.tabs button{flex:1;min-height:44px;border:0;border-radius:12px;background:transparent;color:var(--mineral);font:700 14px/1.2 Manrope,sans-serif;cursor:pointer;transition:background .25s,color .25s}
+.tabs button[aria-selected=true]{background:var(--paper);color:var(--ink)}
+.screen{margin-top:12px;background:var(--paper);border-radius:18px;color:var(--ink);overflow:hidden}
+.shead{display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid var(--line-l);background:#fff}
+.av{width:38px;height:38px;border-radius:50%;background:var(--ink);color:var(--lemon);display:grid;place-items:center;font-weight:800}
+.shead b{display:block;font-size:15px}
+.shead small{display:flex;align-items:center;gap:6px;color:var(--mineral2);font-size:13px}
+.shead small i{width:7px;height:7px;border-radius:50%;background:var(--green)}
+.chat{height:420px;padding:18px;display:flex;flex-direction:column;gap:10px;overflow:hidden;justify-content:flex-end}
+.msg{max-width:86%;padding:11px 15px;border-radius:18px;font-size:14.5px;line-height:1.5;opacity:0;transform:translateY(12px);transition:opacity .45s,transform .45s}
+.msg.show{opacity:1;transform:none}
+.msg.me{align-self:flex-end;background:var(--ink);color:#fff;border-bottom-right-radius:6px}
+.msg.bot{align-self:flex-start;background:#fff;border:1px solid var(--line-l);border-bottom-left-radius:6px}
+.msg strong{font-weight:700}
+.msg .card{margin-top:8px;padding:10px 12px;border-radius:12px;background:var(--paper);border:1px solid var(--line-l);font-size:13.5px}
+.msg .row{display:flex;justify-content:space-between;gap:12px}
+.msg .row span:last-child{font-weight:700;white-space:nowrap}
+.dots{align-self:flex-start;display:flex;gap:5px;padding:14px 16px;background:#fff;border:1px solid var(--line-l);border-radius:18px;border-bottom-left-radius:6px}
+.dots i{width:7px;height:7px;border-radius:50%;background:var(--mineral);animation:blink 1s infinite}
+.dots i:nth-child(2){animation-delay:.15s}.dots i:nth-child(3){animation-delay:.3s}
+@keyframes blink{0%,100%{opacity:.25}50%{opacity:1}}
+.cnote{margin-top:12px;text-align:center;color:var(--mineral);font-size:13px}
+/* video */
+.film{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(32px,5vw,72px);align-items:center}
+.film video{width:100%;border-radius:22px;background:#000;aspect-ratio:16/9;box-shadow:0 30px 60px -30px rgba(0,0,0,.45)}
+.film .small{margin-top:14px}
+/* assistants */
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(18px,2.5vw,28px);margin-top:56px}
+.assist{border-radius:28px;padding:clamp(26px,3.5vw,44px);display:grid;gap:22px;align-content:start;position:relative;overflow:hidden}
+.assist.a1{background:var(--night);color:var(--paper)}
+.assist.a2{background:var(--lemon);color:var(--ink)}
+.assist .tag{font-size:14px;font-weight:800;letter-spacing:.01em;opacity:.75}
+.assist blockquote{margin:0;font-size:clamp(22px,2.2vw,28px);font-weight:700;line-height:1.25;letter-spacing:-.015em}
+.assist ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 18px;font-size:15.5px;font-weight:600}
+.assist li{display:flex;gap:10px;align-items:flex-start}
+.assist li svg{flex:none;width:18px;height:18px;margin-top:3px}
+.a1 li svg{color:var(--lemon)}
+.mini{border-radius:18px;padding:16px;display:grid;gap:8px;font-size:14px}
+.a1 .mini{background:var(--night3)}
+.a2 .mini{background:rgba(18,18,17,.08)}
+.mini .m{padding:9px 13px;border-radius:14px;max-width:88%}
+.a1 .mini .m.u{justify-self:end;background:var(--paper);color:var(--ink)}
+.a1 .mini .m.b{background:#2d2d2a}
+.a2 .mini .m.u{justify-self:end;background:var(--ink);color:#fff}
+.a2 .mini .m.b{background:#fff}
+.mini .lbl{font-size:12px;opacity:.6;font-weight:600}
 /* features */
-.feat .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-top:36px}
-.f{background:var(--bg);padding:26px;display:grid;gap:10px;align-content:start}
-.f svg{width:34px;height:34px}
-.f p{color:var(--soft)}
-.f ul{margin:0;padding-left:18px;color:var(--soft);display:grid;gap:4px;font-size:15px}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:56px}
+.feat{background:#fff;border:1px solid var(--line-l);border-radius:22px;padding:26px;display:grid;gap:12px;align-content:start;transition:transform .3s,box-shadow .3s,border-color .3s}
+.feat:hover{transform:translateY(-6px);box-shadow:0 24px 44px -26px rgba(18,18,17,.35);border-color:var(--ink)}
+.ico{width:48px;height:48px;border-radius:14px;background:var(--ink);color:var(--lemon);display:grid;place-items:center;transition:transform .3s}
+.feat:hover .ico{transform:rotate(-6deg) scale(1.05)}
+.ico svg{width:24px;height:24px}
+.feat p{color:var(--mineral2);font-size:15.5px}
+.ui{margin-top:6px;border-radius:14px;background:var(--paper);border:1px solid var(--line-l);padding:12px 14px;font-size:13.5px;display:grid;gap:6px}
+.ui .r{display:flex;justify-content:space-between;gap:10px}
+.ui .r b{white-space:nowrap}
+.pill{display:inline-block;font-size:12px;font-weight:700;padding:3px 9px;border-radius:999px;background:#e4f4ec;color:#1d7a4d;white-space:nowrap}
+.pill.y{background:#fbf6b8;color:#6b6400}
+.pill.r{background:#fbe6e1;color:#a4392a}
+.bar{height:8px;border-radius:99px;background:var(--line-l);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ink);border-radius:99px}
 /* steps */
-.steps{background:var(--con2)}
-.steps .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(16px,3vw,32px);margin-top:36px}
-.st{display:grid;gap:10px;align-content:start;padding-top:18px;border-top:2px solid var(--ink)}
-.st p{color:var(--soft)}
-/* sectors */
-.sec .row{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
-.chip{border:1px solid var(--line);border-radius:999px;padding:10px 18px;font-weight:500;display:flex;gap:10px;align-items:center}
-.chip span{font-size:13px;color:var(--soft)}
-.chip.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
-.chip.on span{color:light-dark(var(--yel),#7a6200)}
+.steps{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:18px;margin-top:56px;counter-reset:s}
+.step{position:relative;padding-top:68px}
+.step::before{counter-increment:s;content:counter(s);position:absolute;top:0;left:0;width:48px;height:48px;border-radius:50%;border:1.5px solid var(--line-d);display:grid;place-items:center;font-weight:800;color:var(--lemon)}
+.step::after{content:"";position:absolute;top:24px;left:60px;right:-6px;height:1px;background:linear-gradient(90deg,var(--line-d),transparent)}
+.step:last-child::after{display:none}
+.step h3{font-size:19px}
+.step p{color:var(--mineral);font-size:15px;margin-top:8px}
+/* audience */
+.aud{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:48px}
+.aud div{border:1px solid var(--line-l);border-radius:20px;padding:22px 24px;display:flex;align-items:center;gap:16px;font-weight:700;font-size:18px;background:#fff;transition:border-color .25s,transform .25s}
+.aud div:hover{border-color:var(--ink);transform:translateY(-3px)}
+.aud svg{flex:none;width:26px;height:26px}
 /* pricing */
-.price .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,2vw,24px);margin-top:36px}
-.pl{border:1px solid var(--line);border-radius:12px;padding:28px;display:grid;gap:14px;align-content:start;background:var(--card)}
-.pl.hi{border:2px solid var(--ink)}
-.pl .amt{font-size:30px;font-weight:600;white-space:nowrap}
-.pl ul{margin:0;padding-left:18px;display:grid;gap:6px;color:var(--soft)}
-.small{font-size:14px;color:var(--soft)}
-.trial{display:inline-block;margin-top:14px;background:var(--yel);color:#111110;font-weight:600;padding:8px 14px;border-radius:999px}
+.trial{display:inline-flex;align-items:center;gap:10px;margin-top:24px;background:var(--lemon);color:var(--ink);font-weight:800;padding:10px 18px;border-radius:999px}
+.prices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:48px;align-items:stretch}
+.plan{border:1px solid var(--line-d);border-radius:26px;padding:32px;display:grid;gap:20px;align-content:start;background:var(--night2);transition:transform .3s,border-color .3s}
+.plan:hover{transform:translateY(-6px);border-color:var(--mineral2)}
+.plan.hi{border:2px solid var(--lemon);background:linear-gradient(180deg,#1f1e12,var(--night2) 45%)}
+.plan .badge{justify-self:start;font-size:13px;font-weight:800;background:var(--lemon);color:var(--ink);padding:5px 12px;border-radius:99px}
+.amt{font-size:52px;font-weight:800;letter-spacing:-.03em;line-height:1;white-space:nowrap}
+.amt small{font-size:17px;font-weight:600;color:var(--mineral);letter-spacing:0}
+.plan ul{list-style:none;margin:0;padding:0;display:grid;gap:11px;color:#d3d2cb;font-size:15.5px}
+.plan li{display:flex;gap:10px}
+.plan li svg{flex:none;width:18px;height:18px;margin-top:3px;color:var(--green)}
+.plan .btn{width:100%;margin-top:auto}
+.fine{margin-top:22px;color:var(--mineral);font-size:14px;max-width:60em}
+/* commercial */
+.cta{position:relative;overflow:hidden;background:var(--lemon);color:var(--ink)}
+.cta::after{content:"";position:absolute;right:-120px;top:-120px;width:420px;height:420px;border-radius:50%;border:60px solid rgba(18,18,17,.06)}
+.cta .wrap{position:relative;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:48px;align-items:end}
+.cta p{font-size:19px;margin-top:22px;max-width:36em}
+.cta .btn{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 /* faq */
-.faq .list{max-width:820px;margin-top:28px;border-top:1px solid var(--line)}
-details{border-bottom:1px solid var(--line)}
-summary{cursor:pointer;padding:18px 0;font-weight:600;font-size:18px;list-style:none;display:flex;justify-content:space-between;gap:16px;min-height:44px}
+.faq{max-width:900px;margin-top:40px;border-top:1px solid var(--line-l)}
+details{border-bottom:1px solid var(--line-l)}
+summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:20px;padding:22px 0;font-weight:700;font-size:19px;min-height:44px}
 summary::-webkit-details-marker{display:none}
-summary::after{content:"+";font-weight:400;font-size:24px;line-height:1}
-details[open] summary::after{content:"–"}
-details p{padding:0 0 18px;color:var(--soft);max-width:62ch}
+summary span{flex:none;width:32px;height:32px;border-radius:50%;border:1.5px solid var(--line-l);display:grid;place-items:center;transition:transform .3s,background .3s}
+details[open] summary span{transform:rotate(45deg);background:var(--lemon);border-color:var(--lemon)}
+details p{padding:0 0 22px;color:var(--mineral2);max-width:62ch}
 /* contact */
-.contact{background:var(--con)}
-.contact .wrap{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(24px,5vw,64px);align-items:start}
-form{display:grid;gap:14px;background:var(--card);padding:clamp(20px,3vw,32px);border-radius:12px}
-.formbox{display:grid;gap:10px;background:var(--card);padding:8px;border-radius:12px}
-.airtable-embed{width:100%;height:860px;border:0;border-radius:8px;background:#fff}
-label{display:grid;gap:6px;font-weight:500;font-size:15px}
-input,textarea,select{font:16px/1.4 inherit;padding:12px 14px;border:1.5px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);min-height:48px;width:100%}
-textarea{min-height:110px;resize:vertical}
-.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
-#done{display:none;background:var(--con2);border-radius:8px;padding:16px;gap:10px}
-#done.show{display:grid}
-#done pre{white-space:pre-wrap;margin:0;font:14px/1.5 inherit;background:var(--bg);padding:12px;border-radius:6px;border:1px solid var(--line)}
-.err{color:#c0352b;font-size:14px;min-height:1em}
-footer{border-top:1px solid var(--line)}
-footer .wrap{display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center;padding:28px max(5vw,16px);color:var(--soft);font-size:14px}
-footer nav{display:flex;flex-wrap:wrap;gap:8px 20px;margin-left:auto}
-@media(max-width:900px){.feat .grid,.price .grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.nav a:not(.btn){display:none}}
-@media(max-width:700px){.hero .wrap,.contact .wrap,.duo .grid,.steps .grid{grid-template-columns:minmax(0,1fr)}.feat .grid,.price .grid{grid-template-columns:minmax(0,1fr)}.two{grid-template-columns:minmax(0,1fr)}}
+.contact .wrap{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:clamp(32px,5vw,72px);align-items:start}
+.contact .side{display:grid;gap:20px;position:sticky;top:100px}
+.contact .mail{display:flex;align-items:center;gap:12px;font-weight:700;font-size:18px}
+.contact .mail svg{width:22px;height:22px;color:var(--lemon)}
+form{background:var(--night2);border:1px solid var(--line-d);border-radius:26px;padding:clamp(22px,3vw,36px);display:grid;gap:16px}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+label{display:grid;gap:8px;font-weight:700;font-size:14px;color:#d3d2cb}
+label em{font-style:normal;color:var(--lemon)}
+input,select,textarea{font:500 16px/1.4 Manrope,sans-serif;padding:14px 16px;border:1.5px solid var(--line-d);border-radius:14px;background:var(--night);color:var(--paper);min-height:52px;width:100%;transition:border-color .2s}
+input:focus,select:focus,textarea:focus{border-color:var(--lemon);outline:none}
+textarea{min-height:120px;resize:vertical}
+select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--mineral) 50%),linear-gradient(135deg,var(--mineral) 50%,transparent 50%);background-position:calc(100% - 22px) 23px,calc(100% - 16px) 23px;background-size:6px 6px;background-repeat:no-repeat}
+form .btn{width:100%;min-height:56px}
+.ok{display:none;border-radius:16px;background:rgba(47,163,107,.14);border:1px solid rgba(47,163,107,.5);padding:16px 18px;color:#bfe8d2}
+.ok.show{display:block}
+.privacy{font-size:13px;color:var(--mineral)}
+footer{border-top:1px solid var(--line-d);padding:40px 0}
+footer .wrap{display:flex;flex-wrap:wrap;gap:18px 32px;align-items:center;color:var(--mineral);font-size:14px}
+footer nav{display:flex;flex-wrap:wrap;gap:10px 22px;margin-left:auto}
+footer nav a{text-decoration:none}
+footer nav a:hover{color:var(--paper)}
+.sig{width:100%;font-weight:700;color:var(--paper);font-size:15px}
+/* reveal */
+.rv{opacity:0;transform:translateY(26px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
+.rv.in{opacity:1;transform:none}
+.no-js .rv{opacity:1;transform:none}
+/* responsive */
+@media(max-width:1080px){.steps{grid-template-columns:repeat(2,minmax(0,1fr))}.step::after{display:none}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:900px){.hero .wrap,.film,.cta .wrap,.contact .wrap{grid-template-columns:minmax(0,1fr)}.duo,.prices{grid-template-columns:minmax(0,1fr)}.aud{grid-template-columns:repeat(2,minmax(0,1fr))}.contact .side{position:static}}
+@media(max-width:600px){body{font-size:16px}.grid,.aud,.two,.steps{grid-template-columns:minmax(0,1fr)}.assist ul{grid-template-columns:minmax(0,1fr)}.chat{height:380px}.btn{width:100%}.ctas .btn{width:100%}.amt{font-size:44px}}
 </style>
 </head>
-<body>
+<body class="no-js">
+<a class="skip" href="#contenu">Aller au contenu</a>
 
-<header class="top"><div class="wrap">
-  <a class="logo" href="#accueil"><i></i>Kodaro</a>
-  <nav class="nav" aria-label="Menu principal">
-    <a href="#assistants">Assistants</a>
-    <a href="#fonctions">Fonctions</a>
-    <a href="#tarifs">Tarifs</a>
-    <a href="#faq">Questions</a>
-    <a class="btn main" href="#contact">Demander une démo</a>
-  </nav>
-</div></header>
-
-<main>
-<section class="band hero" id="accueil"><div class="wrap">
-  <div class="txt">
-    <span class="tag"><b></b>Disponible pour l'hôtellerie · Essai gratuit de 14 jours</span>
-    <h1>Votre équipe s'occupe des clients. Kodaro s'occupe du reste.</h1>
-    <p class="lead">Planning, paie, pourboires, litiges, réservations et prix des concurrents : Kodaro réunit toute la gestion de votre établissement dans deux assistants IA, que vos équipes utilisent simplement en leur écrivant.</p>
-    <div class="ctas">
-      <a class="btn main" href="#contact">Demander une démo</a>
-      <a class="btn" href="#fonctions">Voir les fonctions</a>
-    </div>
-    <div class="proof"><span>Rien à installer</span><span>Accès par code personnel</span><span>Formation guidée intégrée</span></div>
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#accueil" aria-label="Kodaro, retour à l'accueil"><span class="mark"></span>Kodaro</a>
+    <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="menu">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <nav class="menu" id="menu" aria-label="Menu principal">
+      <a href="#assistants">Assistants</a>
+      <a href="#fonctions">Fonctionnalités</a>
+      <a href="#methode">Méthode</a>
+      <a href="#tarifs">Tarifs</a>
+      <a href="#faq">Questions</a>
+      <a class="btn main" href="#contact">Demander une démonstration</a>
+    </nav>
   </div>
-  <div>
-    <div class="stage">
-      <div class="phone" role="img" aria-label="Exemple de conversation entre un manager et l'assistant équipe Kodaro">
-        <div class="screen">
-          <div class="bar"><div class="av">K</div><div><b>Assistant équipe</b><small>Hôtel Le Comptoir · en ligne</small></div></div>
-          <div class="chat">
-            <div class="me">Mon code est •••••. Fais-moi le briefing du matin.</div>
-            <div class="bot">Bonjour Arthur, voici le point du jour :
-              <ol>
-                <li>Réception : Paul remplace Marie (8 h – 16 h)</li>
-                <li>1 tâche en retard : inventaire du bar</li>
-                <li>Incident : ascenseur du 2ᵉ étage, en cours</li>
-                <li>Litige : bruit chambre 12, à traiter</li>
-                <li>Anniversaire : Marie, aujourd'hui</li>
-              </ol>
-              <span class="ok">Lu dans votre planning à l'instant</span>
-            </div>
-            <div class="me">Combien coûtent les hôtels du quartier le 20 décembre ?</div>
-            <div class="bot">5 hôtels comparés · moyenne 109,60 € la nuit. Ton prix de 110 € est dans la moyenne.</div>
-          </div>
-        </div>
+</header>
+
+<main id="contenu">
+
+<section class="hero" id="accueil">
+  <div class="wrap">
+    <div class="rv">
+      <span class="kicker"><i></i>Plateforme de gestion hôtelière assistée par IA</span>
+      <h1>Votre hôtel mérite une <span>équipe augmentée.</span></h1>
+      <p class="lead">Deux assistants IA. Une seule plateforme. Une nouvelle façon de gérer votre établissement, d'accompagner vos clients et de libérer le potentiel de vos équipes.</p>
+      <p class="pitch">Pendant que vos équipes prennent soin de vos clients, Kodaro les accompagne dans tout ce qui fait fonctionner votre établissement. Des réservations aux plannings, des incidents aux opérations quotidiennes, l'intelligence artificielle devient votre nouvel allié.</p>
+      <div class="ctas">
+        <a class="btn main" href="#contact">Demander une démonstration</a>
+        <a class="btn ghost" href="#plateforme">Découvrir Kodaro</a>
+        <a class="btn ghost" href="#fonctions">Explorer les fonctionnalités</a>
+      </div>
+      <div class="proof">
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 5 5 9-10"/></svg>Rien à installer</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 5 5 9-10"/></svg>Accès par code personnel</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 5 5 9-10"/></svg>Essai gratuit de 14 jours</span>
       </div>
     </div>
-    <p class="note">Exemple de conversation, avec des données de démonstration.</p>
-  </div>
-</div></section>
 
-<section class="band duo" id="assistants"><div class="wrap">
-  <h2>Deux assistants, un seul outil</h2>
-  <p class="lead" style="margin-top:14px">Un assistant parle à vos clients, l'autre travaille avec votre équipe. Les deux s'appuient sur les mêmes données.</p>
-  <div class="grid">
-    <article class="as">
-      <span class="who">Pour vos clients</span>
-      <h3>Assistant réservations</h3>
-      <ul>
-        <li>Recherche de disponibilités et de tarifs en direct</li>
-        <li>Photos des chambres et conditions d'annulation</li>
-        <li>Pré-réservation puis réservation confirmée</li>
-        <li>Répond à toute heure, sans attente</li>
-      </ul>
-    </article>
-    <article class="as">
-      <span class="who">Pour votre équipe</span>
-      <h3>Assistant équipe</h3>
-      <ul>
-        <li>Chaque employé consulte son planning, ses tâches et ses pourboires</li>
-        <li>Absences, échanges, incidents et litiges signalés en une phrase</li>
-        <li>Le manager valide, confie et décide depuis le même chat</li>
-        <li>Briefing du matin et rapport du lundi préparés pour lui</li>
-      </ul>
-    </article>
+    <div class="rv">
+      <div class="console" role="region" aria-label="Démonstration des deux assistants">
+        <div class="tabs" role="tablist" aria-label="Choisir un assistant">
+          <button role="tab" id="t-res" aria-selected="true" aria-controls="screen">Assistant réservations</button>
+          <button role="tab" id="t-eq" aria-selected="false" aria-controls="screen">Assistant équipe</button>
+        </div>
+        <div class="screen" id="screen" role="tabpanel" aria-live="polite">
+          <div class="shead"><div class="av">K</div><div><b id="sname">Assistant réservations</b><small><i></i><span id="ssub">Hôtel Le Comptoir · en ligne</span></small></div></div>
+          <div class="chat" id="chat"></div>
+        </div>
+        <p class="cnote">Exemple de conversation, avec des données de démonstration.</p>
+      </div>
+    </div>
   </div>
-</div></section>
+</section>
 
-<section class="band feat" id="fonctions"><div class="wrap">
-  <h2>Tout ce qu'un manager fait chaque semaine, en une conversation</h2>
-  <div class="grid">
-    <div class="f">
-      <svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="7" width="26" height="23" rx="2"/><path d="M4 14h26M11 4v6M23 4v6"/><rect x="9" y="18" width="6" height="5" fill="#ffe600" stroke="none"/></svg>
-      <h3>Planning et équipe</h3>
-      <ul><li>Créneaux sans chevauchement</li><li>Absences et échanges à valider</li><li>Remplaçant trouvé en un message</li><li>Tableau des heures et alerte au-delà de 35 h</li></ul>
+<section class="band day" id="plateforme">
+  <div class="wrap film">
+    <div class="rv">
+      <span class="kicker"><i></i>Kodaro en 80 secondes</span>
+      <h2>Une plateforme. Deux assistants. Tout votre établissement.</h2>
+      <p class="lead" style="margin-top:22px">Réservations, plannings, absences, pourboires, paie, litiges et veille tarifaire : découvrez comment Kodaro s'intègre au quotidien d'un hôtel.</p>
     </div>
-    <div class="f">
-      <svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 28V12M14 28V6M22 28V16M30 28V9"/><circle cx="22" cy="16" r="3" fill="#ffe600" stroke="none"/></svg>
-      <h3>Pilotage</h3>
-      <ul><li>Briefing du matin en 7 points</li><li>Rapport hebdomadaire du lundi</li><li>Tâches et consignes avec échéance</li><li>Bilans de fin de service</li></ul>
-    </div>
-    <div class="f">
-      <svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="9" width="26" height="17" rx="2"/><circle cx="17" cy="17.5" r="4" fill="#ffe600" stroke="currentColor"/><path d="M8 13h2M24 22h2"/></svg>
-      <h3>Argent et paie</h3>
-      <ul><li>Pourboires répartis au prorata des heures</li><li>Primes, avances et notes de frais</li><li>Récap de paie mensuel pour le comptable</li></ul>
-    </div>
-    <div class="f">
-      <svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 4 30 28H4z"/><path d="M17 13v7"/><circle cx="17" cy="24" r="1.6" fill="#ffe600" stroke="none"/></svg>
-      <h3>Incidents et litiges</h3>
-      <ul><li>Pannes et casses signalées par l'équipe</li><li>Plaintes clients suivies jusqu'à leur résolution</li><li>Compensations validées par le manager</li></ul>
-    </div>
-    <div class="f">
-      <svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="2"><circle cx="15" cy="15" r="9"/><path d="m22 22 8 8"/><path d="M11 17l3-4 3 3 3-4" stroke="#c9a800"/></svg>
-      <h3>Analyse de marché</h3>
-      <ul><li>Prix des hôtels concurrents du quartier</li><li>Points forts et faibles tirés de leurs avis</li><li>Grands événements de la ville et conseils de prix</li></ul>
-    </div>
-    <div class="f">
-      <svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 4 28 8v9c0 7-5 11-11 13C11 28 6 24 6 17V8z"/><path d="m12 17 4 4 7-8" stroke-width="2.4"/></svg>
-      <h3>Équipe et sécurité</h3>
-      <ul><li>Code personnel et rôles employé ou manager</li><li>Journal de chaque modification</li><li>Interrupteur d'urgence pour tout mettre en pause</li><li>Humeur d'équipe anonyme, anniversaires, réussites</li></ul>
+    <div class="rv">
+      <video controls playsinline preload="metadata" aria-label="Vidéo de présentation de Kodaro">
+        <source src="kodaro-demo.mp4" type="video/mp4">
+        Votre navigateur ne lit pas la vidéo. <a href="kodaro-demo.mp4">Téléchargez-la ici</a>.
+      </video>
+      <p class="small" style="color:var(--mineral2);font-size:14px;margin-top:14px">Reconstitution animée, avec des données de démonstration.</p>
     </div>
   </div>
-</div></section>
+</section>
 
-<section class="band steps"><div class="wrap">
-  <h2>Mise en place</h2>
-  <div class="grid">
-    <div class="st"><h3>On découvre votre établissement</h3><p>Une démo, puis un échange sur votre équipe, vos postes et votre façon de travailler.</p></div>
-    <div class="st"><h3>On configure vos assistants</h3><p>Vos employés, vos codes, vos règles. Vos données restent dans votre propre base.</p></div>
-    <div class="st"><h3>Votre équipe est formée par l'IA</h3><p>Chaque employé écrit « aide » et suit une formation guidée adaptée à son rôle.</p></div>
+<section class="band" id="assistants">
+  <div class="wrap">
+    <div class="rv">
+      <span class="kicker"><i></i>Les deux assistants IA</span>
+      <h2>Un assistant pour vos clients. Un copilote pour votre équipe.</h2>
+      <p class="lead" style="margin-top:22px">Les deux s'appuient sur les mêmes informations, chacun avec son rôle et ses droits.</p>
+    </div>
+    <div class="duo">
+      <article class="assist a1 rv">
+        <span class="tag">Assistant réservations · pour vos voyageurs</span>
+        <blockquote>« Chaque demande mérite une réponse. Chaque voyageur mérite une attention particulière. »</blockquote>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 5 5 9-10"/></svg>Recherche d'hôtels et disponibilités</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 5 5 9-10"/></svg>Consultation des tarifs</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 5 5 9-10"/></svg>Présentation des chambres</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 5 5 9-10"/></svg>Conditions d'annulation</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 5 5 9-10"/></svg>Pré-réservation</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 5 5 9-10"/></svg>Confirmation après validation réelle</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 5 5 9-10"/></svg>Assistance conversationnelle permanente</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 5 5 9-10"/></svg>Accompagnement multilingue</li>
+        </ul>
+        <div class="mini" aria-label="Exemple de conversation avec l'assistant réservations">
+          <span class="lbl">Exemple de conversation</span>
+          <div class="m u">Bonsoir, avez-vous une chambre pour deux du 20 au 22 décembre&nbsp;?</div>
+          <div class="m b">Oui : une Chambre Double Confort, annulation gratuite jusqu'au 18 décembre. Je vous la pré-réserve&nbsp;?</div>
+          <div class="m u">Oui, merci.</div>
+          <div class="m b">C'est fait. La réservation sera confirmée dès sa validation par le système de réservation.</div>
+        </div>
+      </article>
+      <article class="assist a2 rv">
+        <span class="tag">Assistant équipe · pour vos employés et managers</span>
+        <blockquote>« Votre copilote opérationnel. Toujours prêt à faire avancer votre établissement. »</blockquote>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 5 5 9-10"/></svg>Plannings et heures travaillées</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 5 5 9-10"/></svg>Absences et remplacements</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 5 5 9-10"/></svg>Pourboires, primes et avances</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 5 5 9-10"/></svg>Éléments préparatoires de paie</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 5 5 9-10"/></svg>Incidents et litiges clients</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 5 5 9-10"/></svg>Briefing quotidien et rapport hebdo</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 5 5 9-10"/></svg>Tâches et consignes</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 5 5 9-10"/></svg>Analyse concurrentielle et prix</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 5 5 9-10"/></svg>Humeur et organisation de l'équipe</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 5 5 9-10"/></svg>Rôles et accès par code personnel</li>
+        </ul>
+        <div class="mini" aria-label="Exemple de conversation avec l'assistant équipe">
+          <span class="lbl">Exemple de conversation</span>
+          <div class="m u">Mon code est •••••. Le briefing du matin.</div>
+          <div class="m b">Marie est absente, Paul la remplace. Une tâche en retard, un incident en cours et un litige à traiter.</div>
+        </div>
+      </article>
+    </div>
   </div>
-</div></section>
+</section>
 
-<section class="band sec"><div class="wrap">
-  <h2>Pensé pour l'hôtellerie, conçu pour aller plus loin</h2>
-  <p class="lead" style="margin-top:14px">Kodaro commence par les hôtels. Les mêmes fonctions de gestion arriveront ensuite dans d'autres secteurs.</p>
-  <div class="row">
-    <span class="chip on">Hôtellerie <span>Disponible</span></span>
-    <span class="chip">Restauration <span>Bientôt</span></span>
-    <span class="chip">Commerce <span>Bientôt</span></span>
-    <span class="chip">Services <span>Bientôt</span></span>
+<section class="band day" id="fonctions">
+  <div class="wrap">
+    <div class="rv">
+      <span class="kicker"><i></i>Une plateforme, de multiples possibilités</span>
+      <h2>Tout votre établissement. Une intelligence connectée.</h2>
+    </div>
+    <div class="grid" id="feats"></div>
   </div>
-</div></section>
+</section>
 
-<section class="band price" id="tarifs"><div class="wrap">
-  <h2>Trois formules selon vos besoins</h2>
-  <p class="trial">Essai gratuit de 14 jours sur toutes les formules</p>
-  <p class="small" style="margin-top:12px">Prix par établissement et par mois. Moins cher que trois outils séparés pour le planning, les réservations et la veille des prix.</p>
-  <div class="grid">
-    <div class="pl">
-      <h3>Essentiel</h3><div class="amt">79 €<span class="small"> / mois</span></div>
-      <ul><li>Assistant équipe</li><li>Planning, tâches, incidents</li><li>Briefing du matin</li></ul>
-      <a class="btn" href="#contact" data-plan="Essentiel">Choisir Essentiel</a>
+<section class="band" id="methode">
+  <div class="wrap">
+    <div class="rv">
+      <span class="kicker"><i></i>Comment ça marche ?</span>
+      <h2>Votre hôtel entre dans une nouvelle dimension.</h2>
     </div>
-    <div class="pl hi">
-      <h3>Pro</h3><div class="amt">149 €<span class="small"> / mois</span></div>
-      <ul><li>Tout Essentiel</li><li>Assistant réservations pour vos clients</li><li>Pourboires, primes, récap de paie</li><li>Litiges clients</li></ul>
-      <a class="btn main" href="#contact" data-plan="Pro">Choisir Pro</a>
-    </div>
-    <div class="pl">
-      <h3>Complet</h3><div class="amt">249 €<span class="small"> / mois</span></div>
-      <ul><li>Tout Pro</li><li>Analyse de marché : prix, avis, événements</li><li>Rapport du lundi</li><li>Accompagnement personnalisé</li></ul>
-      <a class="btn" href="#contact" data-plan="Complet">Choisir Complet</a>
+    <div class="steps">
+      <div class="step rv"><h3>Découverte de votre établissement</h3><p>Un échange sur votre équipe, vos postes, vos priorités et votre façon de travailler.</p></div>
+      <div class="step rv"><h3>Configuration personnalisée</h3><p>Les assistants sont réglés selon vos règles, vos rôles et vos services.</p></div>
+      <div class="step rv"><h3>Connexion de vos informations</h3><p>Employés, codes personnels, plannings et intégrations disponibles pour votre établissement.</p></div>
+      <div class="step rv"><h3>Formation de votre équipe</h3><p>Chaque employé suit une formation guidée intégrée, adaptée à son rôle.</p></div>
+      <div class="step rv"><h3>Utilisation et amélioration continue</h3><p>Kodaro s'ajuste à vos retours, au fil des semaines.</p></div>
     </div>
   </div>
-</div></section>
+</section>
 
-<section class="band faq" id="faq"><div class="wrap">
-  <h2>Questions fréquentes</h2>
-  <div class="list">
-    <details><summary>Faut-il installer une application ?</summary><p>Non. Vos équipes écrivent à l'assistant dans une fenêtre de discussion, depuis un téléphone ou un ordinateur. Rien à télécharger.</p></details>
-    <details><summary>Qui peut voir quoi ?</summary><p>Chaque personne s'identifie avec son code personnel. Un employé ne voit que ses propres horaires, tâches, pourboires et paiements. Seul un manager peut valider, modifier ou consulter les données de toute l'équipe.</p></details>
-    <details><summary>Où sont stockées mes données ?</summary><p>Dans une base de données dédiée à votre établissement. Chaque ajout ou modification est inscrit dans un journal d'activité.</p></details>
-    <details><summary>L'IA peut-elle se tromper ?</summary><p>Elle lit vos données avant de répondre et ne confirme jamais une action qui n'a pas été enregistrée. Les décisions importantes, comme une compensation ou un prix, restent toujours celles du manager.</p></details>
-    <details><summary>Comment mon équipe apprend-elle à s'en servir ?</summary><p>Une formation guidée est intégrée : chaque employé la suit étape par étape, avec des exemples de phrases à écrire, adaptés à son rôle.</p></details>
-    <details><summary>Le récap de paie remplace-t-il mon logiciel de paie ?</summary><p>Non. Il prépare un récapitulatif clair des heures, pourboires, primes, avances et notes de frais, que votre comptable vérifie et utilise.</p></details>
+<section class="band day2" id="pour-qui">
+  <div class="wrap">
+    <div class="rv">
+      <span class="kicker"><i></i>À qui s'adresse Kodaro ?</span>
+      <h2>Quelle que soit la taille de votre établissement, votre ambition mérite les bons outils.</h2>
+    </div>
+    <div class="aud rv">
+      <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21V5l8-3 8 3v16M9 21v-5h6v5M8 9h1M15 9h1M8 13h1M15 13h1"/></svg>Hôtels indépendants</div>
+      <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3 4 9v12h16V9zM9 21v-6h6v6"/><circle cx="12" cy="10" r="1.5"/></svg>Boutique-hôtels</div>
+      <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3 2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.9z"/></svg>Hôtels haut de gamme</div>
+      <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21V9l5-3v15M8 21V4l8 3v14M16 21v-9l5 2v7M2 21h20"/></svg>Groupes hôteliers</div>
+      <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21v-9M12 12c-2-5-6-6-9-5 3 0 6 2 9 5zM12 12c2-5 6-6 9-5-3 0-6 2-9 5zM12 12c-1-4 0-7 2-9M3 21h18"/></svg>Resorts</div>
+      <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Établissements touristiques</div>
+    </div>
   </div>
-</div></section>
+</section>
 
-<section class="band contact" id="contact"><div class="wrap">
-  <div style="display:grid;gap:16px">
-    <h2>Voyez Kodaro avec vos propres yeux</h2>
-    <p class="lead">Laissez-nous vos coordonnées : nous vous montrons les deux assistants en action, répondons à vos questions et lançons votre essai gratuit de 14 jours.</p>
-    <p class="small">Ou écrivez-nous directement : <b id="mail"></b></p>
+<section class="band" id="tarifs">
+  <div class="wrap">
+    <div class="rv">
+      <span class="kicker"><i></i>Tarifs</span>
+      <h2>Trois formules. Une seule ambition&nbsp;: vous faire gagner du temps.</h2>
+      <p class="lead" style="margin-top:22px">Prix par établissement et par mois. Moins cher que trois outils séparés pour le planning, les réservations et la veille tarifaire.</p>
+      <span class="trial"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 5 5 9-10"/></svg>Essai gratuit de 14 jours sur toutes les formules</span>
+    </div>
+    <div class="prices">
+      <article class="plan rv">
+        <h3>Essentiel</h3>
+        <div class="amt">79 €<small> / mois</small></div>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 5 5 9-10"/></svg>Assistant équipe</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 5 5 9-10"/></svg>Planning</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 5 5 9-10"/></svg>Tâches</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 5 5 9-10"/></svg>Incidents</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 5 5 9-10"/></svg>Briefing quotidien</li>
+        </ul>
+        <a class="btn ghost" href="#contact" data-plan="Essentiel">Choisir Essentiel</a>
+      </article>
+      <article class="plan hi rv">
+        <span class="badge">Recommandé</span>
+        <h3>Pro</h3>
+        <div class="amt">149 €<small> / mois</small></div>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 5 5 9-10"/></svg>Tout Essentiel</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 5 5 9-10"/></svg>Assistant réservations</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 5 5 9-10"/></svg>Pourboires</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 5 5 9-10"/></svg>Primes</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 5 5 9-10"/></svg>Récapitulatif de paie</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 5 5 9-10"/></svg>Litiges clients</li>
+        </ul>
+        <a class="btn main" href="#contact" data-plan="Pro">Choisir Pro</a>
+      </article>
+      <article class="plan rv">
+        <h3>Complet</h3>
+        <div class="amt">249 €<small> / mois</small></div>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 5 5 9-10"/></svg>Tout Pro</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 5 5 9-10"/></svg>Analyse concurrentielle</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 5 5 9-10"/></svg>Veille tarifaire</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 5 5 9-10"/></svg>Analyse des avis</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 5 5 9-10"/></svg>Rapport hebdomadaire</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 5 5 9-10"/></svg>Accompagnement personnalisé</li>
+        </ul>
+        <a class="btn ghost" href="#contact" data-plan="Complet">Choisir Complet</a>
+      </article>
+    </div>
+    <p class="fine">L'essai gratuit de 14 jours est soumis aux conditions présentées lors de la démonstration.</p>
   </div>
-  <form action="https://formsubmit.co/contact@kodaro.app" method="POST">
-    <input type="hidden" name="_subject" value="Nouvelle demande de démo Kodaro">
-    <input type="hidden" name="_template" value="table">
-    <input type="hidden" name="_next" value="https://kodaro.app/#merci">
-    <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
-    <div class="two">
-      <label>Nom<input name="nom" autocomplete="name" required></label>
-      <label>Établissement<input name="etablissement" autocomplete="organization" required></label>
+</section>
+
+<section class="band cta">
+  <div class="wrap">
+    <div class="rv">
+      <h2>Et si vous pouviez consacrer moins de temps à gérer, et davantage à accueillir ?</h2>
+      <p>Les meilleurs établissements ne se distinguent pas uniquement par leurs chambres ou leurs services. Ils se distinguent par leur capacité à anticiper, à répondre et à créer une expérience mémorable.</p>
+      <p>Kodaro accompagne cette évolution en mettant l'intelligence artificielle au service de votre quotidien.</p>
     </div>
-    <div class="two">
-      <label>E-mail<input name="email" type="email" autocomplete="email" required></label>
-      <label>Téléphone<input name="telephone" type="tel" autocomplete="tel"></label>
+    <div class="rv"><a class="btn" href="#contact">Découvrir ce que Kodaro peut changer pour votre hôtel</a></div>
+  </div>
+</section>
+
+<section class="band day" id="faq">
+  <div class="wrap">
+    <div class="rv">
+      <span class="kicker"><i></i>Questions fréquentes</span>
+      <h2>Tout ce que vous voulez savoir avant de commencer.</h2>
     </div>
-    <label>Formule<select name="formule"><option>Je ne sais pas encore</option><option>Essentiel</option><option>Pro</option><option>Complet</option></select></label>
-    <label>Votre message<textarea name="message" placeholder="Nombre de chambres, taille de l'équipe, vos besoins…"></textarea></label>
-    <button class="btn main" type="submit">Demander ma démo et mon essai gratuit</button>
-    <p class="small" id="merci-msg" hidden><b>Merci, votre demande a bien été envoyée.</b> Nous vous répondons rapidement.</p>
-  </form>
-</div></section>
+    <div class="faq rv">
+      <details><summary>Faut-il installer une application ?<span aria-hidden="true">+</span></summary><p>Non. Vos équipes et vos clients écrivent aux assistants dans une fenêtre de discussion, depuis un téléphone ou un ordinateur. Rien à télécharger.</p></details>
+      <details><summary>Comment fonctionnent les deux assistants ?<span aria-hidden="true">+</span></summary><p>L'assistant réservations répond à vos voyageurs : disponibilités, tarifs, chambres, conditions et réservation. L'assistant équipe accompagne vos employés et vos managers : plannings, absences, tâches, incidents, pourboires, paie, litiges et analyse de marché. Chacun ne fait que ce que son rôle permet.</p></details>
+      <details><summary>Qui peut consulter les données ?<span aria-hidden="true">+</span></summary><p>Chaque personne s'identifie avec son code personnel. Un employé ne voit que ses propres horaires, tâches, pourboires et paiements. Seul un manager peut valider, modifier ou consulter les données de toute l'équipe. Les réponses à l'humeur d'équipe restent anonymes pour le manager.</p></details>
+      <details><summary>Où sont stockées les informations ?<span aria-hidden="true">+</span></summary><p>Dans une base de données dédiée à votre établissement. Chaque ajout ou modification est inscrit dans un journal d'activité, et un interrupteur d'urgence permet de suspendre toute modification en un instant.</p></details>
+      <details><summary>L'IA peut-elle se tromper ?<span aria-hidden="true">+</span></summary><p>Comme tout outil, oui. C'est pourquoi les assistants lisent vos données avant de répondre, ne confirment jamais une action qui n'a pas été enregistrée, et laissent toujours les décisions importantes, comme une compensation ou un prix, à votre manager.</p></details>
+      <details><summary>Kodaro remplace-t-il un logiciel de paie ?<span aria-hidden="true">+</span></summary><p>Non. Kodaro prépare un récapitulatif clair des heures, heures supplémentaires, pourboires, primes, avances et notes de frais, que votre comptable vérifie et utilise dans son logiciel de paie.</p></details>
+      <details><summary>Comment fonctionnent les réservations ?<span aria-hidden="true">+</span></summary><p>L'assistant recherche les disponibilités et les tarifs, présente la chambre et ses conditions d'annulation, puis effectue une pré-réservation. La réservation n'est confirmée au voyageur qu'après validation réelle par le système de réservation.</p></details>
+      <details><summary>Comment se déroule la configuration ?<span aria-hidden="true">+</span></summary><p>Après une démonstration, nous configurons vos assistants : employés, rôles, codes personnels, postes et règles de votre établissement. Votre équipe suit ensuite une formation guidée intégrée, puis Kodaro s'améliore au fil de vos retours.</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="band contact" id="contact">
+  <div class="wrap">
+    <div class="side rv">
+      <span class="kicker"><i></i>Démonstration et essai gratuit</span>
+      <h2>Voyez Kodaro en action dans votre établissement.</h2>
+      <p class="lead">Laissez-nous vos coordonnées : nous vous présentons les deux assistants, répondons à vos questions et préparons votre essai gratuit de 14 jours.</p>
+      <p class="mail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg><span id="mail">contact@kodaro.app</span></p>
+    </div>
+    <form class="rv" action="https://formsubmit.co/contact@kodaro.app" method="POST" aria-label="Demande de démonstration">
+      <input type="hidden" name="_subject" value="Nouvelle demande de démo Kodaro">
+      <input type="hidden" name="_template" value="table">
+      <input type="hidden" name="_next" value="https://kodaro.app/#merci">
+      <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <div class="ok" id="merci-msg" role="status"><b>Merci, votre demande a bien été envoyée.</b> Nous vous répondons rapidement.</div>
+      <div class="two">
+        <label for="f-nom">Nom <em aria-hidden="true">*</em><input id="f-nom" name="nom" autocomplete="name" required></label>
+        <label for="f-etab">Établissement <em aria-hidden="true">*</em><input id="f-etab" name="etablissement" autocomplete="organization" required></label>
+      </div>
+      <div class="two">
+        <label for="f-mail">Adresse e-mail <em aria-hidden="true">*</em><input id="f-mail" name="email" type="email" autocomplete="email" required></label>
+        <label for="f-tel">Téléphone<input id="f-tel" name="telephone" type="tel" autocomplete="tel"></label>
+      </div>
+      <label for="f-plan">Formule souhaitée<select id="f-plan" name="formule"><option>Je ne sais pas encore</option><option>Essentiel</option><option>Pro</option><option>Complet</option></select></label>
+      <label for="f-msg">Message<textarea id="f-msg" name="message" placeholder="Nombre de chambres, taille de l'équipe, vos besoins…"></textarea></label>
+      <button class="btn main" type="submit">Demander ma démo et mon essai gratuit</button>
+      <p class="privacy">Vos informations servent uniquement à vous recontacter au sujet de Kodaro.</p>
+    </form>
+  </div>
+</section>
+
 </main>
 
-<footer><div class="wrap">
-  <a class="logo" href="#accueil" style="font-size:18px"><i></i>Kodaro</a>
-  <span>© 2026 Kodaro. Gestion d'entreprise pilotée par l'IA.</span>
-  <nav aria-label="Pied de page"><a href="#fonctions">Fonctions</a><a href="#tarifs">Tarifs</a><a href="#faq">Questions</a><a href="#contact">Contact</a></nav>
-</div></footer>
+<footer>
+  <div class="wrap">
+    <a class="logo" href="#accueil" style="font-size:19px"><span class="mark"></span>Kodaro</a>
+    <span>© 2026 Kodaro. Plateforme de gestion hôtelière assistée par IA.</span>
+    <nav aria-label="Pied de page"><a href="#assistants">Assistants</a><a href="#fonctions">Fonctionnalités</a><a href="#tarifs">Tarifs</a><a href="#faq">Questions</a><a href="#contact">Contact</a></nav>
+    <p class="sig">L'intelligence qui simplifie la gestion. L'humain qui sublime l'hospitalité.</p>
+  </div>
+</footer>
 
 <script>
 {
-const CONTACT = "contact@kodaro.app";
-document.getElementById('mail').textContent = CONTACT;
-const show = () => { if (location.hash === '#merci') { const m = document.getElementById('merci-msg'); m.hidden = false; m.scrollIntoView({block:'center'}); } };
-show(); window.addEventListener('hashchange', show);
-for (const a of document.querySelectorAll('[data-plan]')) a.addEventListener('click', () => { document.querySelector('select[name=formule]').value = a.dataset.plan; });
+document.body.classList.remove('no-js');
+const $ = s => document.querySelector(s);
+const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// menu
+const burger = $('#burger'), menu = $('#menu');
+burger.addEventListener('click', () => { const o = menu.classList.toggle('open'); burger.setAttribute('aria-expanded', o); });
+menu.addEventListener('click', e => { if (e.target.closest('a')) { menu.classList.remove('open'); burger.setAttribute('aria-expanded', 'false'); } });
+
+// features
+const I = {
+  cal:'<path d="M4 6h16v14H4zM4 10h16M8 3v4M16 3v4"/>',
+  clock:'<circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/>',
+  swap:'<path d="M7 7h11l-3-3M17 17H6l3 3"/>',
+  coin:'<circle cx="12" cy="12" r="8"/><path d="M14.5 9.5c-.5-1-1.5-1.5-2.5-1.5-1.4 0-2.5.8-2.5 2s1.1 1.6 2.5 2 2.5.8 2.5 2-1.1 2-2.5 2c-1 0-2-.5-2.5-1.5M12 6.5v1.5M12 16v1.5"/>',
+  gift:'<path d="M4 11h16v9H4zM3 7h18v4H3zM12 7v13M12 7c-2 0-4-1-4-2.5S10 3 12 7c2-4 4-3.5 4-2.5S14 7 12 7z"/>',
+  doc:'<path d="M6 3h9l4 4v14H6zM14 3v5h5M9 13h7M9 17h5"/>',
+  alert:'<path d="M12 4 3 20h18zM12 10v4M12 17h.01"/>',
+  scale:'<path d="M12 4v16M5 8h14M5 8l-3 6c1 1.5 5 1.5 6 0zM19 8l-3 6c1 1.5 5 1.5 6 0zM8 20h8"/>',
+  sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5 19 19M5 19l1.5-1.5M17.5 6.5 19 5"/>',
+  chart:'<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
+  check:'<path d="M9 11l3 3 8-8"/><path d="M20 12v7H4V5h11"/>',
+  eye:'<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+  tag:'<path d="M3 3h8l10 10-8 8L3 11z"/><circle cx="7.5" cy="7.5" r="1.5"/>',
+  heart:'<path d="M12 20s-8-5-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 9c0 6-8 11-8 11z"/>',
+  key:'<circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M17 6l3 3M14 9l2 2"/>'
+};
+const F = [
+  ['cal','Plannings sans casse-tête','Créneaux sans chevauchement, consultables par chaque employé avec son code personnel.','<div class="r"><span>Marie · Réception</span><b>8 h – 16 h</b></div><div class="r"><span>Paul · Bar</span><b>14 h – 22 h</b></div>'],
+  ['clock','Heures travaillées','Tableau des heures par employé et alerte automatique au-delà de 35 heures par semaine.','<div class="r"><span>Paul</span><b>38 h</b></div><div class="bar"><i style="width:92%"></i></div><span class="pill y">Au-delà de 35 h</span>'],
+  ['swap','Absences et remplacements','Absences signalées en une phrase, validées par le manager, remplaçant proposé aussitôt.','<div class="r"><span>Absence de Marie</span><span class="pill">Validée</span></div><div class="r"><span>Remplaçant</span><b>Paul</b></div>'],
+  ['coin','Pourboires équitables','Répartition automatique au prorata des heures de chacun, au centime près.','<div class="r"><span>Paul · 8 h</span><b>60,00 €</b></div><div class="r"><span>Léa · 5 h</span><b>37,50 €</b></div>'],
+  ['gift','Primes et avances','Primes accordées par le manager, avances et notes de frais demandées et validées en quelques secondes.','<div class="r"><span>Avance · Marie</span><span class="pill y">Demandée</span></div><div class="r"><span>Prime · Paul</span><span class="pill">Validée</span></div>'],
+  ['doc','Préparation de la paie','Un récapitulatif mensuel clair, prêt pour votre comptable.','<div class="r"><span>Heures</span><b>152 h</b></div><div class="r"><span>Pourboires</span><b>212,40 €</b></div>'],
+  ['alert','Incidents internes','Pannes, casses et ménage signalés par l\'équipe, confiés et suivis jusqu\'à leur résolution.','<div class="r"><span>Ascenseur 2e étage</span><span class="pill y">En cours</span></div>'],
+  ['scale','Litiges clients','Chaque réclamation enregistrée, suivie et réglée, compensation validée par le manager.','<div class="r"><span>Bruit chambre 12</span><span class="pill">Résolu</span></div><div class="r"><span>Compensation</span><b>15,00 €</b></div>'],
+  ['sun','Briefing quotidien','Chaque matin : planning, absences, tâches en retard, incidents, litiges, anniversaires et réussites.','<div class="r"><span>Points du jour</span><b>7 rubriques</b></div>'],
+  ['chart','Rapport hebdomadaire','Chaque lundi, le bilan de la semaine : heures, tâches, incidents, litiges, pourboires et équipe.','<div class="r"><span>Point fort</span><b>Tâches à jour</b></div><div class="r"><span>À surveiller</span><b>Heures sup</b></div>'],
+  ['check','Tâches et consignes','Le manager confie, l\'employé consulte et indique quand c\'est fait.','<div class="r"><span>Inventaire du bar</span><span class="pill r">En retard</span></div>'],
+  ['eye','Analyse concurrentielle','Les points forts et faibles des hôtels voisins, tirés de leurs avis clients.','<div class="r"><span>Note moyenne relevée</span><b>sur 10</b></div><div class="r"><span>Points forts · faibles</span><b>3 + 3</b></div>'],
+  ['tag','Veille tarifaire','Vos prix comparés aux hôtels du quartier, et les grands événements de la ville pour ajuster vos tarifs.','<div class="r"><span>Prix moyen du quartier</span><b>109,60 €</b></div><div class="r"><span>Votre prix</span><span class="pill">Dans la moyenne</span></div>'],
+  ['heart','Humeur et organisation','Humeur de la semaine anonyme, anniversaires et réussites à célébrer, nouveaux arrivants accueillis.','<div class="r"><span>Humeur de l\'équipe</span><b>4,2 / 5</b></div>'],
+  ['key','Rôles et accès','Code personnel, rôles employé ou manager, journal d\'activité et interrupteur d\'urgence.','<div class="r"><span>Employé</span><b>Ses données</b></div><div class="r"><span>Manager</span><b>Toute l\'équipe</b></div>']
+];
+$('#feats').innerHTML = F.map(([i,t,d,u]) => `<article class="feat rv"><div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${I[i]}</svg></div><h3>${t}</h3><p>${d}</p><div class="ui" aria-label="Exemple">${u}</div></article>`).join('');
+
+// demo console
+const SCRIPTS = {
+  res: {name:'Assistant réservations', msgs:[
+    ['me','Bonjour, une chambre pour 2 du 20 au 22 décembre&nbsp;?'],
+    ['bot','Bien sûr. Voici notre meilleure offre&nbsp;:<div class="card"><div class="row"><span>Chambre Double Confort</span><span>2 nuits</span></div><div class="row"><span>Annulation gratuite</span><span>jusqu\'au 18/12</span></div></div>'],
+    ['me','Parfait, je réserve. Jean Martin.'],
+    ['bot','<strong>Pré-réservation effectuée.</strong> Votre réservation sera confirmée dès sa validation par le système de réservation.']
+  ]},
+  eq: {name:'Assistant équipe', msgs:[
+    ['me','Mon code est •••••. Le briefing du matin.'],
+    ['bot','Bonjour Arthur, voici le point du jour&nbsp;:<div class="card"><div class="row"><span>Marie absente</span><span>Paul remplace</span></div><div class="row"><span>Tâche en retard</span><span>Inventaire</span></div><div class="row"><span>Litige</span><span>Chambre 12</span></div></div>'],
+    ['me','Pourboires du service midi&nbsp;: 120&nbsp;€.'],
+    ['bot','Répartition au prorata des heures&nbsp;:<div class="card"><div class="row"><span>Paul · 8 h</span><span>60,00 €</span></div><div class="row"><span>Léa · 5 h</span><span>37,50 €</span></div><div class="row"><span>Marie · 3 h</span><span>22,50 €</span></div></div>']
+  ]}
+};
+const chat = $('#chat'), tres = $('#t-res'), teq = $('#t-eq');
+let cur = 'res', timers = [], auto = true;
+const clear = () => { timers.forEach(clearTimeout); timers = []; };
+const later = (fn, ms) => timers.push(setTimeout(fn, ms));
+function play(key) {
+  clear(); cur = key; chat.innerHTML = '';
+  $('#sname').textContent = SCRIPTS[key].name;
+  tres.setAttribute('aria-selected', key === 'res'); teq.setAttribute('aria-selected', key === 'eq');
+  const msgs = SCRIPTS[key].msgs;
+  if (reduce) { chat.innerHTML = msgs.map(([w,h]) => `<div class="msg ${w} show">${h}</div>`).join(''); return; }
+  let t = 400;
+  msgs.forEach(([w,h]) => {
+    if (w === 'bot') {
+      later(() => { const d = document.createElement('div'); d.className = 'dots'; d.innerHTML = '<i></i><i></i><i></i>'; chat.appendChild(d); }, t);
+      t += 1100;
+    }
+    later(() => { const dd = chat.querySelector('.dots'); if (dd) dd.remove(); const m = document.createElement('div'); m.className = 'msg ' + w; m.innerHTML = h; chat.appendChild(m); requestAnimationFrame(() => m.classList.add('show')); }, t);
+    t += w === 'me' ? 900 : 2200;
+  });
+  if (auto) later(() => play(cur === 'res' ? 'eq' : 'res'), t + 2500);
+}
+tres.addEventListener('click', () => { auto = false; play('res'); });
+teq.addEventListener('click', () => { auto = false; play('eq'); });
+document.querySelector('.tabs').addEventListener('keydown', e => { if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { auto = false; const k = cur === 'res' ? 'eq' : 'res'; play(k); (k === 'res' ? tres : teq).focus(); } });
+play('res');
+
+// plan buttons
+document.querySelectorAll('[data-plan]').forEach(a => a.addEventListener('click', () => { $('#f-plan').value = a.dataset.plan; }));
+
+// thank-you message
+const showOk = () => { if (location.hash === '#merci') { const m = $('#merci-msg'); m.classList.add('show'); document.getElementById('contact').scrollIntoView({block:'start'}); } };
+showOk(); window.addEventListener('hashchange', showOk);
+
+// reveal on scroll
+if ('IntersectionObserver' in window && !reduce) {
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), {threshold:.12, rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.rv').forEach(el => io.observe(el));
+} else document.querySelectorAll('.rv').forEach(el => el.classList.add('in'));
 }
 </script>
 </body>
